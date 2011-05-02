@@ -1,0 +1,5 @@
+				Beul's Project
+		
+This is the Beul's Project source code, with all the resources. You can use it, modify it and distribute it under the GNU GPL conditions(find them in LICENSE).
+
+If you want the Windows binaries, you can download them from Sourceforge, just look for Beul. If you want it on any other OS, you have to compile sources with SFML.
