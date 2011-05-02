@@ -56,3 +56,9 @@ void TileAABB::operator=(unsigned int ID){
     id = static_cast<TileID>(ID);*/
     *this = *tileList[ID]->Clone();
 }
+
+const bool TileAABB::operator==(unsigned int ID)    const{
+    if(id == ID)
+        return true;
+    return false;
+}

@@ -66,6 +66,7 @@ void Explosion::Explode(World& w, int colX, int colY){
 
     if(w.map->TileExists(colX, colY))
         w.map->ReplaceElementWith(colX, colY, SKY);
+
     w.map->ComputeCollisions();
 }
 

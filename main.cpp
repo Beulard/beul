@@ -107,8 +107,11 @@ int main()
     bool stop = false;
     sf::Event Event;
 
+    bool pause = false;
+    bool gen = true;
 
     while(stop == false){
+        if(pause == false){
         while(App.GetEvent(Event))
             if(App.GetInput().IsKeyDown(sf::Key::Escape))
                 stop = true;
@@ -134,6 +137,17 @@ int main()
         if(App.GetInput().IsKeyDown(sf::Key::Space) && jump == false){
             jump = true;
             Beul.SetYVelocity(-10);
+        }
+
+        if(App.GetInput().IsKeyDown(sf::Key::R) && gen == true){
+            for(unsigned int i=0; i<map.GetElements().size(); ++i){
+                for(unsigned int j=0; j<map.GetElements()[i].size(); ++j){
+                    map.DeleteElement(i, j);
+                }
+            }
+            map.GenerateRandomElements();
+            map.ComputeCollisions();
+            gen = false;
         }
 
 
@@ -261,7 +275,10 @@ int main()
         if(App.GetInput().IsKeyDown(sf::Key::X))
             App.Draw(Secret);
         App.Display();
-    }
+
+        }
+        }
+
 
     return 0;
 }

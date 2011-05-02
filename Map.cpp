@@ -58,7 +58,7 @@ void Map::GenerateRandomElements(){
         for(unsigned int j=nbrTilesPerColumn - 1; j >= 1; --j){
             if(j < nbrTilesPerColumn - 2 && j >= 6){
                 unsigned int nbr = rand() % 12;
-                if(GetAboveTile(i, j)->GetID() == SKY && GetTile(i, j)->GetID() == EARTH){
+                if(*GetAboveTile(i, j) == SKY && *GetTile(i, j) == EARTH){
                     if(nbr < 7){
                         ReplaceElementWith(i, j - 1, EARTH);
                     }
@@ -72,7 +72,7 @@ void Map::GenerateRandomElements(){
             for(unsigned int j=nbrTilesPerColumn - 1; j >= 1; --j){
                 unsigned int nbr = rand() % 12;
                 if(j < nbrTilesPerColumn - 1){
-                    if(GetLeftTile(i, j)->GetID() == EARTH && GetBelowTile(i, j)->GetID() == SKY && nbr < 2){
+                    if(*GetLeftTile(i, j) == EARTH && *GetBelowTile(i, j) == SKY && nbr < 2){
                         ReplaceElementWith(i, j + 1, EARTH);
                     }
                 }
@@ -83,7 +83,7 @@ void Map::GenerateRandomElements(){
             for(unsigned int j=nbrTilesPerColumn - 1; j >= 1; --j){
                 unsigned int nbr = rand() % 12;
                 if(j < nbrTilesPerColumn - 1 && static_cast<unsigned int>(i) < nbrColumns - 1){
-                    if(GetRightTile(i, j)->GetID() == EARTH && GetBelowTile(i, j)->GetID() == SKY && nbr < 2){
+                    if(*GetRightTile(i, j) == EARTH && *GetBelowTile(i, j) == SKY && nbr < 2){
                         ReplaceElementWith(i, j + 1, EARTH);
                     }
                 }
@@ -92,8 +92,8 @@ void Map::GenerateRandomElements(){
         /*for(int i=nbrColumns - 1; i >= 0; --i){
             for(unsigned int j=nbrTilesPerColumn - 1; j >= 1; --j){
         if(i > 3 && i < nbrColumns - 4 && j > 3 && j < nbrTilesPerColumn - 4)
-                if(elements[i][j + 1]->GetID() == EARTH && elements[i][j + 2]->GetID() == EARTH && elements[i + 1][j + 2]->GetID() == EARTH && elements[i - 1][j + 2]->GetID() == EARTH
-                   && elements[i][j]->GetID() == SKY && elements[i + 1][j]->GetID() == SKY && elements[i - 1][j]->GetID() == SKY && elements[i + 1][j + 1]->GetID() == SKY && elements[i - 1][j + 1]->GetID() == SKY){
+                if(elements[i][j + 1] == EARTH && elements[i][j + 2] == EARTH && elements[i + 1][j + 2] == EARTH && elements[i - 1][j + 2] == EARTH
+                   && elements[i][j] == SKY && elements[i + 1][j] == SKY && elements[i - 1][j] == SKY && elements[i + 1][j + 1] == SKY && elements[i - 1][j + 1] == SKY){
                        delete elements[i][j + 1];
                        elements[i][j + 1] = new TileAABB(SKY);
                    }
@@ -105,8 +105,8 @@ void Map::GenerateRandomElements(){
     for(int i=nbrColumns - 1; i >= 0; --i){
         for(unsigned int j=nbrTilesPerColumn - 1; j >= 1; --j){
             if(static_cast<unsigned int>(i) > 1 && static_cast<unsigned int>(i) < nbrColumns - 2 && j > 1 && j < nbrTilesPerColumn - 3){
-                if(GetTile(i, j)->GetID() == EARTH && GetTile(i + 1, j + 1)->GetID() == EARTH && GetTile(i - 1, j + 1)->GetID() == EARTH &&
-                    GetTile(i, j + 2)->GetID() == EARTH && GetBelowTile(i, j)->GetID() == SKY){
+                if(*GetTile(i, j) == EARTH && *GetTile(i + 1, j + 1) == EARTH && *GetTile(i - 1, j + 1) == EARTH &&
+                    *GetTile(i, j + 2) == EARTH && *GetBelowTile(i, j) == SKY){
                     ReplaceElementWith(i, j + 1, EARTH);
                 }
             }
@@ -118,7 +118,7 @@ void Map::GenerateRandomElements(){
     for(unsigned int i=0; i<nbrColumns; ++i){
         for(unsigned int j=0; j<nbrTilesPerColumn; ++j){
             if(j > 1){
-                if(GetAboveTile(i, j)->GetID() == SKY && GetTile(i, j)->GetID() == EARTH){
+                if(*GetAboveTile(i, j) == SKY && *GetTile(i, j) == EARTH){
                         ReplaceElementWith(i, j, GRASS);
                 }
             }
@@ -127,22 +127,22 @@ void Map::GenerateRandomElements(){
     for(unsigned int i=0; i<nbrColumns; ++i)
         for(unsigned int j=0; j<nbrTilesPerColumn; ++j){
             unsigned int nbr = rand() % 100;
-            if(GetTile(i, j)->GetID() == SKY && j > 6 && nbr > 97)
+            if(*GetTile(i, j) == SKY && j > 6 && nbr > 97)
                 AddItem(APPLE, i, j);
         }
 
     /*for(unsigned int i=0; i<nbrColumns; ++i){
         for(unsigned int j=0; j<nbrTilesPerColumn; ++j){
-            if(elements[i][j]->GetID() != SKY){
+            if(elements[i][j] != SKY){
                 if(i < nbrColumns - 1 && i > 0 && j < nbrTilesPerColumn - 1 && j > 0){
                     TileAABB* t = dynamic_cast<TileAABB*>(elements[i][j]);
-                    if(GetAboveTile(i, j)->GetID() == SKY)
+                    if(GetAboveTile(i, j) == SKY)
                         t->CS |= UP;
-                    if(GetBelowTile(i, j)->GetID() == SKY)
+                    if(GetBelowTile(i, j) == SKY)
                         t->CS |= DOWN;
-                    if(GetLeftTile(i, j)->GetID() == SKY)
+                    if(GetLeftTile(i, j) == SKY)
                         t->CS |= LEFT;
-                    if(GetRightTile(i, j)->GetID() == SKY)
+                    if(GetRightTile(i, j) == SKY)
                         t->CS |= RIGHT;
                 }
             }
@@ -156,7 +156,7 @@ void Map::RePlaceElements(sf::RenderWindow& W){
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
             if(TileExists(i, j))
-                elements[i][j]->AABB::SetPosition(i*TILES_SIZE, j*TILES_SIZE);
+                privGetTile(i, j)->AABB::SetPosition(i*TILES_SIZE, j*TILES_SIZE);
             /*else if(elements[i][j]->GetType() == type::SPRITE)
                 elements[i][j]->SetPosition(i*32 - 1, j*32);*/
         }
@@ -174,18 +174,18 @@ void Map::AddElement(unsigned int ID){
 
 void Map::DeleteElement(unsigned int x, unsigned int y){
     if(TileExists(x, y)){
-        delete elements[x][y];
+        delete privGetTile(x, y);
         elements[x].erase(elements[x].begin() + y);
     }
 }
 
 void Map::ReplaceElementWith(unsigned int x, unsigned int y, unsigned int ID){
     if(TileExists(x, y)){
-        int ax = elements[x][y]->Left();
-        int ay = elements[x][y]->Up();
-        delete elements[x][y];
-        elements[x][y] = tileList[ID]->Clone();
-        elements[x][y]->AABB::SetPosition(ax, ay);
+        int ax = GetTile(x, y)->Left();
+        int ay = GetTile(x, y)->Up();
+        delete privGetTile(x, y);
+        *privGetTile(x, y) = *tileList[ID]->Clone();
+        privGetTile(x, y)->AABB::SetPosition(ax, ay);
     }
 }
 
@@ -271,7 +271,7 @@ const TileAABB* Map::GetBelowTile(int x, int y)   const{
     }
 }
 
-TileAABB* Map::GetTile(int x, int y){
+TileAABB* Map::privGetTile(int x, int y){
     try{
         if(TileExists(x, y))
             return elements[x][y];
@@ -284,7 +284,7 @@ TileAABB* Map::GetTile(int x, int y){
     }
 }
 
-TileAABB* Map::GetAboveTile(int x, int y){
+TileAABB* Map::privGetAboveTile(int x, int y){
     try{
         if(TileExists(x, y - 1))
             return elements[x][y - 1];
@@ -297,7 +297,7 @@ TileAABB* Map::GetAboveTile(int x, int y){
     }
 }
 
-TileAABB* Map::GetLeftTile(int x, int y){
+TileAABB* Map::privGetLeftTile(int x, int y){
     try{
         if(TileExists(x - 1, y))
             return elements[x - 1][y];
@@ -310,7 +310,7 @@ TileAABB* Map::GetLeftTile(int x, int y){
     }
 }
 
-TileAABB* Map::GetRightTile(int x, int y){
+TileAABB* Map::privGetRightTile(int x, int y){
     try{
         if(TileExists(x + 1, y))
             return elements[x + 1][y];
@@ -323,11 +323,11 @@ TileAABB* Map::GetRightTile(int x, int y){
     }
 }
 
-TileAABB* Map::GetBelowTile(int x, int y){
+TileAABB* Map::privGetBelowTile(int x, int y){
     try{
         if(TileExists(x, y + 1))
             return elements[x][y + 1];
-        throw std::string("Can't access tile right to 'elements[" + IntToString(x) + "][" + IntToString(y) + "]'.\nReturning NULL pointer, probably crashing.");
+        throw std::string("Can't access tile below 'elements[" + IntToString(x) + "][" + IntToString(y) + "]'.\nReturning NULL pointer, probably crashing.");
     }
 
     catch(std::string& s){
@@ -353,7 +353,8 @@ void Map::Draw(sf::RenderWindow& W){
         for(unsigned int j=0; j<elements[i].size(); ++j){
             TileAABB* t = dynamic_cast<TileAABB*>(elements[i][j]);
             if(t->Right() >= W.GetView().GetRect().Left && t->Left() <= W.GetView().GetRect().Right)
-                elements[i][j]->Draw(W);
+                if(TileExists(i, j))
+                    elements[i][j]->Draw(W);
         }
     }
     for(unsigned int i=0; i<items.size(); ++i)
@@ -366,10 +367,10 @@ void Map::Draw(sf::RenderWindow& W){
     jCollisions.clear();
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
-            if(elements[i][j]->GetID() != SKY){
+            if(elements[i][j] != SKY){
                 if(i >= 1 && i <= nbrColumns - 2){
                     if(j >= 1 && j <= nbrTilesPerColumn - 2){
-                        if((GetAboveTile(i, j)->GetID() == SKY || GetBelowTile(i, j)->GetID() == SKY || GetRightTile(i, j)->GetID() == SKY || GetLeftTile(i, j)->GetID() == SKY)){
+                        if((GetAboveTile(i, j) == SKY || GetBelowTile(i, j) == SKY || GetRightTile(i, j) == SKY || GetLeftTile(i, j) == SKY)){
                             iCollisions.push_back(i);
                             jCollisions.push_back(j);
                         }
@@ -393,7 +394,7 @@ void Map::Draw(sf::RenderWindow& W){
     jCollisions.clear();
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
-            if(dynamic_cast<TileAABB*>(elements[i][j])->GetID() != SKY){
+            if(dynamic_cast<TileAABB*>(elements[i][j]) != SKY){
                 if(p.GetCollisionLimit()->WillCollision(*dynamic_cast<TileAABB*>(elements[i][j]))){
                     iCollisions.push_back(i);
                     jCollisions.push_back(j);
@@ -410,21 +411,21 @@ void Map::ComputeCollisions(){
                 if(i >= 1 && i <= nbrColumns - 2){
                     if(j >= 1 && j <= nbrTilesPerColumn - 2){
                         if(!GetAboveTile(i, j)->Collides() || !GetBelowTile(i, j)->Collides() || !GetRightTile(i, j)->Collides() || !GetLeftTile(i, j)->Collides()){
-                            elements[i][j]->SetCollide(true);
+                            privGetTile(i, j)->SetCollide(true);
                         }
                         else
-                            elements[i][j]->SetCollide(false);
+                            privGetTile(i, j)->SetCollide(false);
                     }
                     else{
-                        elements[i][j]->SetCollide(true);
+                        privGetTile(i, j)->SetCollide(true);
                     }
                 }
                 else{
-                    elements[i][j]->SetCollide(true);
+                    privGetTile(i, j)->SetCollide(true);
                 }
             //}
-            if(elements[i][j]->GetID() == SKY)
-                elements[i][j]->SetCollide(false);
+            if(*GetTile(i, j) == SKY)
+                privGetTile(i, j)->SetCollide(false);
         }
     }
     /*collisions.clear();

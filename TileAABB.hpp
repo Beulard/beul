@@ -29,6 +29,7 @@ class TileAABB : public TileSprite, public AABB{
         const bool Collides()   const;
 
         void operator=(unsigned int ID);
+        const bool operator==(unsigned int ID)    const;
 
     protected:
 

@@ -28,7 +28,7 @@ World::~World(){
 
 void World::AddMissile(unsigned int ID, int xVel, int yVel){
     missiles.push_back(missileList[ID]->Clone());
-    missiles.back()->AABB::SetPosition(player->CenterX(), player->CenterY());
+    missiles.back()->AABB::SetPosition(player->CenterX() - missiles.back()->Width() / 2, player->CenterY() - missiles.back()->Width() / 2);
     missiles.back()->SetXVelocity(xVel);
     missiles.back()->SetYVelocity(yVel);
 }

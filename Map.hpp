@@ -60,13 +60,14 @@ class Map{
 
 
     private:
-        namespace priv{
-        TileAABB* GetTile(int x, int y);
-        TileAABB* GetAboveTile(int x, int y);
-        TileAABB* GetBelowTile(int x, int y);
-        TileAABB* GetRightTile(int x, int y);
-        TileAABB* GetLeftTile(int x, int y);
-        }   //  namespace priv
+
+
+        TileAABB* privGetTile(int x, int y);
+        TileAABB* privGetAboveTile(int x, int y);
+        TileAABB* privGetBelowTile(int x, int y);
+        TileAABB* privGetRightTile(int x, int y);
+        TileAABB* privGetLeftTile(int x, int y);
+
 
 
 
