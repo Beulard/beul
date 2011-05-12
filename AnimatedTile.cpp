@@ -9,16 +9,17 @@ FrameList::FrameList(bool){
     frames.push_back(Frame(BA[LAVA + 1], 1.f));
 }
 
-Frame& FrameList::operator[](unsigned int index){
+Frame* FrameList::operator[](unsigned int index){
     try{
         if(index > frames.size() - 1)
             throw 0;
-        else
-            return frames[index];
+        else{
+            return new Frame(frames[index]);
+        }
     }
     catch(int){
         std::cerr << "Can't access FrameList[" << index << "], returning FrameList[0]." << std::endl;
-        return frames[0];
+        return new Frame(frames[0]);
     }
 }
 
@@ -34,22 +35,27 @@ AnimationList::AnimationList(){
 }
 
 AnimationList::AnimationList(bool){
-    std::vector<Frame*> f;
-    f.push_back(new Frame(frameList[0]));
-    f.push_back(new Frame(frameList[1]));
-    anims.push_back(Animation(f));
+    //std::vector<Frame*> f;
+    //f.push_back(frameList[0]);
+    //f.push_back(frameList[1]);
+    anims.push_back(Animation());
+    anims.back().AddFrame(*frameList[0]);
+    anims.back().AddFrame(*frameList[1]);
+    //anims.back().AddFrame(frameList[0]);
+    //anims.back().AddFrame(frameList[1]);
 }
 
-Animation& AnimationList::operator[](unsigned int index){
+Animation AnimationList::operator[](unsigned int index){
     try{
         if(index > anims.size() - 1)
             throw 0;
-        else
-            return anims[index];
+        else{
+            return Animation(anims[index]);
+        }
     }
     catch(int){
         std::cerr << "Can't access AnimationList[" << index << "], returning AnimationList[0]." << std::endl;
-        return anims[0];
+        return Animation(anims[0]);
     }
 }
 
@@ -64,17 +70,17 @@ AnimatedTile::AnimatedTile(){
 }
 
 AnimatedTile::~AnimatedTile(){
-
+    //delete anim;
 }
 
-const Animation* AnimatedTile::GetAnim()    const{
+const Animation& AnimatedTile::GetAnim()    const{
     return anim;
 }
 
 void AnimatedTile::Draw(sf::RenderWindow& W){
-    anim->SetPosition(left, up);
-    anim->Animate(W.GetFrameTime());
-    anim->Draw(W);
+    anim.SetPosition(left, up);
+    anim.Animate(W.GetFrameTime());
+    anim.Draw(W);
 }
 
 const unsigned int AnimatedTile::GetAnimationID()   const{

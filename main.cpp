@@ -57,6 +57,7 @@ int main()
 
 
     map.AddItem(ROCKETLAUNCHER, 10, 10);
+    map.AddItem(ROCKETREPEATER, 20, 10);
 
 
     sf::Shape BeulLives = sf::Shape::Rectangle(5, 15, 96, 20, sf::Color::Green, 1.f, sf::Color::Blue);

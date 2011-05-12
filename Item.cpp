@@ -33,7 +33,7 @@ const unsigned int ItemList::size() const{
 ItemAppearances::ItemAppearances(bool){
     push_back(I.appleimg);
     push_back(I.rocketlauncherimg);
-    push_back(I.rocketlauncherimg);
+    push_back(I.rocketrepeaterimg);
 }
 
 ItemAppearances IA(1);

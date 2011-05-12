@@ -1,6 +1,7 @@
 #include "RocketRepeater.hpp"
+#include "World.hpp"
 
-/*RocketRepeater::RocketRepeater(){
+RocketRepeater::RocketRepeater(){
     id = ROCKETREPEATER;
     appearance = &IA[id];
     Ammo = ROCKET;
@@ -10,4 +11,12 @@
 
 RocketRepeater::~RocketRepeater(){
 
-}*/
+}
+
+Item* RocketRepeater::Clone(){
+    return new RocketRepeater(*this);
+}
+
+void RocketRepeater::onGet(World& w){
+    w.player->SetWeapon(ROCKETREPEATER);
+}

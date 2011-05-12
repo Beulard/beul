@@ -6,17 +6,6 @@
 
 extern ItemList itemList;
 
-/*class Inventory{
-    public:
-        Inventory();
-        ~Inventory();
-
-        void SetWeapon(const Weapon& w);
-
-    //private:
-        Weapon* weapon;
-};*/
-
 class Player : public AABB{
     public:
         Player();
@@ -37,6 +26,8 @@ class Player : public AABB{
         void AddLife();
         const int GetLives()    const;
         void Die();
+
+        void DropWeapon(World& w);
 
         void AddItem(unsigned int ID);
         void SetWeapon(const Weapon& w);

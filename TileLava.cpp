@@ -5,16 +5,16 @@ TileLava::TileLava(){
     id = LAVA;
     aid = ALAVA;
 
-    anim = new Animation(animationList[aid]);
-    anim->SetPosition(left, up);
+    anim = animationList[aid];
+    anim.SetPosition(left, up);
     appearance = NULL;
-    width = 12;
-    height = 12;
+    width = 24;
+    height = 24;
     eReaction = DELETE_MISSILE;
 }
 
 TileLava::~TileLava(){
-    anim = NULL;
+
 }
 
 
@@ -23,9 +23,9 @@ TileAABB* TileLava::Clone(){
 }
 
 void TileLava::Draw(sf::RenderWindow& W){
-    anim->SetPosition(left - 10, up - 10);
-    anim->Animate(W.GetFrameTime());
-    anim->Draw(W);
+    anim.SetPosition(left - 4, up - 4);
+    anim.Animate(W.GetFrameTime());
+    anim.Draw(W);
 }
 
 void TileLava::onCollision(World& w){
@@ -46,5 +46,5 @@ const bool TileLava::Collides() const{
 }
 
 void TileLava::SetPosition(float x, float y){
-    AABB::SetPosition(x + 10, y + 10);
+    AABB::SetPosition(x + 4, y + 4);
 }

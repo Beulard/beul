@@ -1,20 +1,5 @@
 #include "Player.hpp"
-
-/////////////   Inventory   /////////////
-/*Inventory::Inventory(){
-    weapon = new Weapon(static_cast<Weapon&>(itemList[ROCKETLAUNCHER]));
-}
-
-Inventory::~Inventory(){
-    delete weapon;
-}
-
-void Inventory::SetWeapon(const Weapon& w){
-    *weapon = w;
-}*/
-
-
-///////////    Player    //////////////
+#include "World.hpp"
 
 Player::Player(){
     AABB::SetPosition(400, 150);
@@ -60,6 +45,15 @@ void Player::Reload(float frameTime){
     weapon->Reload(frameTime);
 }
 
+void Player::DropWeapon(World& w){
+    if(weapon != NULL){
+        w.map->AddItem(weapon->GetID(), CenterX(), CenterY());
+        delete weapon;
+
+        weapon = NULL;
+    }
+}
+
 void Player::Move(){
     AABB::Move();
 }
@@ -78,9 +72,8 @@ const int Player::GetLives()    const{
 
 void Player::Die(){
     lives--;
-    SetPosition(spawnPointX, spawnPointY);
-    yVelocity = -1.f;
-    xVelocity = 0.f;
+    //SetPosition(spawnPointX, spawnPointY);
+    yVelocity = -20.f;
 }
 
 

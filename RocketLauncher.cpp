@@ -1,4 +1,5 @@
 #include "RocketLauncher.hpp"
+#include "World.hpp"
 
 RocketLauncher::RocketLauncher(){
     id = ROCKETLAUNCHER;
@@ -17,6 +18,7 @@ Item* RocketLauncher::Clone(){
 }
 
 void RocketLauncher::onGet(World& w){
+    //w.player->DropWeapon(w);
     w.player->SetWeapon(ROCKETLAUNCHER);
 }
 

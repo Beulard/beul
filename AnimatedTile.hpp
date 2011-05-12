@@ -12,7 +12,7 @@ class FrameList{
     public:
         FrameList();
         FrameList(bool);
-        Frame& operator[](unsigned int index);
+        Frame* operator[](unsigned int index);
         const unsigned int size() const;
     private:
         std::vector<Frame> frames;
@@ -24,7 +24,7 @@ class AnimationList{
     public:
         AnimationList();
         AnimationList(bool);
-        Animation& operator[](unsigned int index);
+        Animation operator[](unsigned int index);
         const unsigned int size()   const;
     private:
         std::vector<Animation> anims;
@@ -42,14 +42,14 @@ class AnimatedTile : public TileAABB{
 
         virtual void Draw(sf::RenderWindow& W);
 
-        const Animation* GetAnim()  const;
+        const Animation& GetAnim()  const;
 
         const unsigned int GetAnimationID()  const;
 
         virtual void onCollision(World& w);
 
     protected:
-        Animation* anim;
+        Animation anim;
         AnimatedTileID aid;
 };
 

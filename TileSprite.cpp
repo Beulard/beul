@@ -12,6 +12,7 @@ Images::Images(bool){
     earthimg.LoadFromFile("resources/EarthTile.png");
     appleimg.LoadFromFile("resources/Apple.png");
     rocketlauncherimg.LoadFromFile("resources/Rocketlauncher.png");
+    rocketrepeaterimg.LoadFromFile("resources/RocketRepeater.png");
     rocketimg.LoadFromFile("resources/Rocket.png");
     lava1img.LoadFromFile("resources/Lava1.png");
     lava2img.LoadFromFile("resources/Lava2.png");

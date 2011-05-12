@@ -13,6 +13,7 @@ struct Images{
     sf::Image earthimg;
     sf::Image appleimg;
     sf::Image rocketlauncherimg;
+    sf::Image rocketrepeaterimg;
     sf::Image rocketimg;
     sf::Image lava1img;
     sf::Image lava2img;

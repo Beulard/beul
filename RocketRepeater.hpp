@@ -4,12 +4,14 @@
 #include "RocketLauncher.hpp"
 
 
-/*class RocketRepeater : public RocketLauncher{
+class RocketRepeater : public RocketLauncher{
     public:
         RocketRepeater();
         ~RocketRepeater();
-    protected:
-    private:
-};*/
+
+        virtual Item* Clone();
+
+        virtual void onGet(World& w);
+};
 
 #endif // BEUL_ROCKETREPEATER

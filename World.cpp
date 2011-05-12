@@ -11,7 +11,7 @@ World::World(Map& m, Player& p){
     //  Items Initialization  //
     itemList.RegisterItem(new Apple());
     itemList.RegisterItem(new RocketLauncher());
-    //itemList.RegisterItem(new RocketRepeater());
+    itemList.RegisterItem(new RocketRepeater());
 
     //  Missiles Initialization  //
     missileList.RegisterMissile(new Rocket());
@@ -39,8 +39,10 @@ void World::AddMissile(unsigned int ID, float xAcc, float yAcc){
 void World::DeleteMissile(unsigned int index){
     if(missiles.size() > 1){
         delete missiles[index];
-        missiles[index] = missiles.back()->Clone();
-        delete missiles[missiles.size() - 1];
+        if(index != missiles.size() - 1){
+            missiles[index] = missiles.back()->Clone();
+            delete missiles[missiles.size() - 1];
+        }
         missiles.pop_back();
     }
     else if(missiles.size() == 1){
