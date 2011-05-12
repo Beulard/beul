@@ -2,6 +2,7 @@
 #define BEUL_APPLE
 
 #include "Item.hpp"
+#include "World.hpp"
 
 
 class Apple : public Item{

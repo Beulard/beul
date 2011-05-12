@@ -22,7 +22,6 @@ class Player : public AABB{
         Player();
         ~Player();
 
-        const AABB* GetCollisionLimit() const;
         void Move();
 
         void SetWeapon(unsigned int ID);
@@ -35,18 +34,19 @@ class Player : public AABB{
         void UseWeapon(World& w, int targetX, int targetY);
         void Reload(float frameTime);
 
+        void AddLife();
         const int GetLives()    const;
+        void Die();
 
         void AddItem(unsigned int ID);
         void SetWeapon(const Weapon& w);
 
-        void operator--(int);
-
     private:
-        AABB* CollisionLimit;
         Animation* Anim;
         Weapon* weapon;
         int lives;
+        int spawnPointX;
+        int spawnPointY;
 };
 
 #endif // BEUL_PLAYER

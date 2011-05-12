@@ -29,6 +29,7 @@ class Map{
         void GenerateRandomElements();
         void Draw(sf::RenderWindow& W);
 
+        void NeedsRePlacing(bool b);
         void RePlaceElements(sf::RenderWindow& W);
 
         void AddElement(unsigned int ID);

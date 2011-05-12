@@ -11,6 +11,11 @@ class TileEarth : public TileAABB{
 
         virtual TileAABB* Clone();
 
+        virtual const bool Collides()   const;
+
+        virtual void onCollisionWithRocket(World& w, unsigned int indexX, unsigned int indexY, unsigned int source);
+
+
     private:
 };
 

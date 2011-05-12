@@ -11,7 +11,7 @@ Frame::Frame(sf::Sprite& s, float fTime){
 }
 
 Frame::~Frame(){
-
+    sprite = NULL;
 }
 
 void Frame::SetFrameTime(float fTime){

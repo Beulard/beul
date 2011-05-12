@@ -4,7 +4,7 @@ Rocket::Rocket(){
     id = ROCKET;
     appearance = &MA[id];
     explosionRadius = 4;
-    width = 29;
+    width = 32;
     height = 19;
 }
 
@@ -22,8 +22,12 @@ Missile* Rocket::Clone(){
     return new Rocket(*this);
 }
 
-void Rocket::onCollision(World& w, unsigned int thisIndex, unsigned int colX, unsigned int colY){
-    Explosion e(w, colX, colY, explosionRadius);
-    //std::cout << "cheval" << std::endl;
-    w.DeleteMissile(thisIndex);
+void Rocket::onCollision(World& w, unsigned int colX, unsigned int colY, unsigned int thisIndex){
+    w.map->GetElements()[colX][colY]->onCollisionWithRocket(w, colX, colY, thisIndex);
+    w.map->NeedsRePlacing(true);
 }
+
+const unsigned int Rocket::GetExplosionRadius() const{
+    return explosionRadius;
+}
+

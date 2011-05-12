@@ -12,7 +12,9 @@ class Rocket : public Missile{
 
         virtual Missile* Clone();
 
-        virtual void onCollision(World& w, unsigned int thisIndex, unsigned int colX, unsigned int colY);
+        virtual void onCollision(World& w, unsigned int colX, unsigned int colY, unsigned int thisIndex);
+
+        const unsigned int GetExplosionRadius() const;
 
     protected:
         unsigned int explosionRadius;

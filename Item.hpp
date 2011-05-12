@@ -20,13 +20,17 @@ extern ItemAppearances IA;
 
 enum ItemID{
     APPLE = 0,
-    ROCKETLAUNCHER = 1
+    ROCKETLAUNCHER = 1,
+    ROCKETREPEATER = 2
 };
 
 class ItemList{
     public:
         void RegisterItem(Item* i);
         Item* operator[](unsigned int index);
+        const unsigned int size()   const;
+
+    private:
         std::vector<Item*> items;
 };
 

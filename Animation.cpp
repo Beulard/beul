@@ -4,14 +4,21 @@ Animation::Animation(){
     currentFrame = 0;
 }
 
+Animation::Animation(const std::vector<Frame*>& frames){
+    for(unsigned int i=0; i<frames.size(); ++i){
+        Frames.push_back(frames[i]);
+    }
+    currentFrame = 0;
+}
+
 Animation::~Animation(){
     for(unsigned int i=0; i<Frames.size(); ++i)
-        delete Frames[i];
+        Frames[i] = NULL;
 }
 
 
-void Animation::AddFrame(const Frame& F){
-    Frames.push_back(new Frame(F));
+void Animation::AddFrame(Frame& F){
+    Frames.push_back(&F);
 }
 
 const Frame* Animation::GetFrame(unsigned int index)    const{
@@ -36,8 +43,11 @@ void Animation::Animate(float time){
 }
 
 void Animation::SetPosition(int x, int y){
-    for(unsigned int i=0; i<Frames.size(); ++i)
-        Frames[i]->SetPosition(x, y);
+    if(Frames.size() != 0){
+        for(unsigned int i=0; i<Frames.size(); ++i){
+            Frames[i]->SetPosition(x, y);
+        }
+    }
 }
 
 void Animation::Play(){
@@ -56,4 +66,8 @@ void Animation::Stop(){
 void Animation::Reset(){
     paused = false;
     currentFrame = 0;
+}
+
+const unsigned int Animation::size()    const{
+    return Frames.size();
 }

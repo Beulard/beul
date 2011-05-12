@@ -4,7 +4,6 @@
 #include "Tile.hpp"
 
 
-
 struct Images{
     Images();
     Images(bool);
@@ -15,6 +14,8 @@ struct Images{
     sf::Image appleimg;
     sf::Image rocketlauncherimg;
     sf::Image rocketimg;
+    sf::Image lava1img;
+    sf::Image lava2img;
 };
 
 extern Images I;
@@ -48,7 +49,7 @@ class TileSprite : public Tile{
         void SetAppearance(sf::Sprite& a);
         const sf::Sprite* GetAppearance() const;
 
-        void Draw(sf::RenderWindow& W);
+        virtual void Draw(sf::RenderWindow& W);
 
     protected:
         sf::Sprite* appearance;

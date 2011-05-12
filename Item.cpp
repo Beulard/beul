@@ -3,9 +3,6 @@
 
 
 /*******    ITEMLIST    ********/
-//ItemList::ItemList(){
-
-//}
 
 ItemList itemList;
 
@@ -18,25 +15,28 @@ Item* ItemList::operator[](unsigned int index){
         if(index > items.size() - 1)
             throw 0;
         else
-            return items[index];
+            return items[index]->Clone();
     }
     catch(int){
-        std::cout << "Cant access items[" << index << "], returning items[0]." << std::endl;
-        return items[0];
+        std::cerr << "Cant access ItemList[" << index << "], returning ItemList[0]." << std::endl;
+        return items[0]->Clone();
     }
 }
+
+const unsigned int ItemList::size() const{
+    return items.size();
+}
+
 
 /*******    APPEARANCES    *********/
 
 ItemAppearances::ItemAppearances(bool){
     push_back(I.appleimg);
     push_back(I.rocketlauncherimg);
+    push_back(I.rocketlauncherimg);
 }
 
-ItemAppearances IA(true);
-
-
-/*******    ITEM    *********/
+ItemAppearances IA(1);
 
 Item::Item(){
     id = ROCKETLAUNCHER;

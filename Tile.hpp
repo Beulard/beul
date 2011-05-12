@@ -3,15 +3,11 @@
 #include "SFML/Graphics.hpp"
 #include <iostream>
 
-enum TileAppearanceMode{
-    INVISIBLE,
-    VISIBLE
-};
-
 enum TileID{
     SKY = 0,
     EARTH = 1,
-    GRASS = 2
+    GRASS = 2,
+    LAVA = 3
 };
 
 
@@ -22,7 +18,7 @@ class Tile{
         virtual ~Tile() = 0;
 
         virtual void Draw(sf::RenderWindow& W);
-        virtual void SetPosition(int x, int y);
+        virtual void SetPos(int x, int y);
         const int GetXPosition()    const;
         const int GetYPosition()    const;
 

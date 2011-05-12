@@ -14,7 +14,8 @@ Item* Apple::Clone(){
 }
 
 void Apple::onGet(World& w){
-
+    if(w.player->GetLives() < 3)
+        w.player->AddLife();
 }
 
 void Apple::onUse(World& w, int targetX, int targetY){

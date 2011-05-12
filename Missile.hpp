@@ -21,6 +21,8 @@ class MissileList{
     public:
         void RegisterMissile(Missile* m);
         Missile* operator[](unsigned int index);
+        const unsigned int size()   const;
+    private:
         std::vector<Missile*> missiles;
 };
 
@@ -33,7 +35,7 @@ class Missile : public TileAABB{
 
         virtual Missile* Clone() = 0;
 
-        virtual void onCollision(World& w, unsigned int thisID, unsigned int colX, unsigned int colY) = 0;
+        virtual void onCollision(World& w, unsigned int colX, unsigned int colY, unsigned int thisIndex) = 0;
 
     protected:
         MissileID id;

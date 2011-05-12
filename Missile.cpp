@@ -22,12 +22,16 @@ Missile* MissileList::operator[](unsigned int index){
         if(index > missiles.size() - 1)
             throw 0;
         else
-            return missiles[index];
+            return missiles[index]->Clone();
     }
     catch(int){
-        std::cout << "Cant access missiles[" << index << "], returning missiles[0]." << std::endl;
-        return missiles[0];
+        std::cerr << "Cant access MissileList[" << index << "], returning MissileList[0]." << std::endl;
+        return missiles[0]->Clone();
     }
+}
+
+const unsigned int MissileList::size()  const{
+    return missiles.size();
 }
 
 Missile::Missile(){
@@ -38,6 +42,4 @@ Missile::~Missile(){
 
 }
 
-void Missile::onCollision(World& w, unsigned int thisID, unsigned int sourceX, unsigned int sourceY){
-
-}
+void Missile::onCollision(World& w, unsigned int colX, unsigned int colY, unsigned int thisIndex){}

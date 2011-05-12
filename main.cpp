@@ -5,32 +5,24 @@
 #include "Map.hpp"
 #include "World.hpp"
 
-void ComputeFrameRate(const double frameTime, double& rate, unsigned int& frames, unsigned int& frameRate){
-    rate += frameTime;
-    frames += 1;
-    if(rate >= 1){
-        rate = 0;
-        frameRate = frames;
-        frames = 0;
-    }
+const float ComputeFrameRate(const double frameTime){
+    return 1/frameTime;
 }
-
-const float gravity = 0.5f;
 
 using namespace std;
 
 int main()
 {
-    sf::RenderWindow App(sf::VideoMode(1024, 576, 32), "Beul's Project"/*, sf::Style::Fullscreen*/);
-    App.SetPosition(100, 0);
-    App.SetFramerateLimit(56);
+    sf::RenderWindow App(sf::VideoMode(1280, 720, 32), "Beul's Project"/*, sf::Style::Fullscreen*/);
+    App.SetPosition(-8, 0);
+    App.SetFramerateLimit(60);
 
     sf::View View(App.GetDefaultView());
 
     sf::Music Epic;
-    Epic.OpenFromFile("resources/Epic.ogg");
+    Epic.OpenFromFile("resources/Nyan.ogg");
     Epic.Play();
-    Epic.SetVolume(0);
+    Epic.SetVolume(100);
 
     sf::Image Heroimg;
     Heroimg.LoadFromFile("resources/Beul.png");
@@ -50,11 +42,11 @@ int main()
     sf::Font font;
     font.LoadFromFile("resources/SRF2.ttf");
 
-
     Animation BeulIdle;
-
-    BeulIdle.AddFrame(Frame(Hero, 0.5f));
-    BeulIdle.AddFrame(Frame(Hero2, 0.5f));
+    Frame b1(Hero, 0.5f);
+    Frame b2(Hero2, 0.5f);
+    BeulIdle.AddFrame(b1);
+    BeulIdle.AddFrame(b2);
 
     Player Beul;
     Beul.SetAnimation(BeulIdle);
@@ -81,20 +73,16 @@ int main()
 
     sf::String frameRateString("", font, 18);
     frameRateString.SetColor(sf::Color::Yellow);
-    double rate = 0;
-    unsigned int frames = 0;
-    unsigned int frameRate = 0;
 
 
-    //map.GetCollisions();
+    cout << tileList.size() << " tiles in the Tiles List." << endl;
+    cout << itemList.size() << " items in the Items List." << endl;
+    cout << missileList.size() << " missiles in the Missiles List." << endl;
+    cout << frameList.size() << " frames in the Frames List." << endl;
+    cout << animationList.size() << " animations in the Animations List." << endl;
 
+    //map.ComputeCollisions();
 
-    //cout << iCollisions.size() << " AABBs on the map you can collide with." << endl;
-    cout << itemList.items.size() << " items in the Items List" << endl;
-
-    //std::vector<TileAABB**> collisions = map.GetCollisions();
-    map.ComputeCollisions();
-    //cout << map.GetCollisions().size() << endl;
 
     sf::String Secret("GG", font, 18);
     Secret.SetPosition(100, 50);
@@ -107,21 +95,20 @@ int main()
     bool stop = false;
     sf::Event Event;
 
-    bool pause = false;
-    bool gen = true;
-
     while(stop == false){
-        if(pause == false){
         while(App.GetEvent(Event))
             if(App.GetInput().IsKeyDown(sf::Key::Escape))
                 stop = true;
 
         if(App.GetInput().IsKeyDown(sf::Key::Q))
-            Beul.SetXVelocity(-4);
+            Beul.AccelerateLeft();
         else if(App.GetInput().IsKeyDown(sf::Key::D))
-            Beul.SetXVelocity(4);
+            Beul.AccelerateRight();
         else
-            Beul.SetXVelocity(0);
+            Beul.Decelerate();
+
+        if(App.GetInput().IsKeyDown(sf::Key::L))
+            App.SetFramerateLimit(5);
 
 
         int MouseX = App.ConvertCoords(App.GetInput().GetMouseX(), App.GetInput().GetMouseY()).x;
@@ -129,26 +116,28 @@ int main()
 
 
         //cout << MouseX << endl << MouseY << endl;
-        if(App.GetInput().IsMouseButtonDown(sf::Mouse::Left)){
+        if(App.GetInput().IsMouseButtonDown(sf::Mouse::Left))
             Beul.UseWeapon(world, MouseX, MouseY);
-        }
         Beul.Reload(App.GetFrameTime());
+
 
         if(App.GetInput().IsKeyDown(sf::Key::Space) && jump == false){
             jump = true;
-            Beul.SetYVelocity(-10);
+            Beul.SetYAcceleration(-10.5f);
         }
 
-        if(App.GetInput().IsKeyDown(sf::Key::R) && gen == true){
+        if(App.GetInput().IsKeyDown(sf::Key::R)){
             for(unsigned int i=0; i<map.GetElements().size(); ++i){
                 for(unsigned int j=0; j<map.GetElements()[i].size(); ++j){
-                    map.DeleteElement(i, j);
+                    if(map.TileExists(i, j))
+                        map.DeleteElement(i, j);
                 }
             }
+            map = Map(2, App.GetHeight());
             map.GenerateRandomElements();
-            map.ComputeCollisions();
-            gen = false;
+            //map.ComputeCollisions();
         }
+
 
 
 
@@ -158,61 +147,47 @@ int main()
         //for(unsigned int i=0; i<iCollisions.size(); ++i){
         for(unsigned int i=0; i<map.GetElements().size(); ++i){
             for(unsigned int j=0; j<map.GetElements()[i].size(); ++j){
-            //TileAABB* t = dynamic_cast<TileAABB*>(map.GetElements()[iCollisions[i]][jCollisions[i]]);
-            //auto t = map.GetElements()[i][j]->Clone();
-            //auto t = ().Clone();
-            //if(t->GetID() != SKY){
-            //if((*(*(map.GetCollisions()[i]))).Collides()){
-            if(map.GetTile(i, j)->Collides()){
-
-                if(Beul.GetCollisionLimit()->WillCollision(*map.GetElements()[i][j])){
-                    if(Beul.WillCollision(*map.GetElements()[i][j])){
-                        Beul.Collide(*map.GetTile(i, j));
-                        nbrCollisions += 1;
+                //if(map.GetTile(i, j)->Collides()){
+                    if(Beul.WillCollision(*map.GetTile(i, j))){
+                        if(map.GetTile(i, j)->Collides()){
+                            Beul.Collide(*map.GetTile(i, j));
+                            nbrCollisions += 1;
+                        }
+                        map.GetElements()[i][j]->onCollision(world);
                     }
-                }
-                if(Beul.WillDownCollision(*map.GetElements()[i][j])){
-                    jump = false;
-                    /*if(Beul.YVelocity() > 15)
-                        Beul--;*/
-                }
+                    if(map.GetTile(i, j)->Collides()){
+                        if(Beul.WillDownCollision(*map.GetTile(i, j)))
+                            jump = false;
 
 
-                if(Beul.WillUpCollision(*map.GetElements()[i][j]))
-                    hasUpCollided = true;
 
+                        if(Beul.WillUpCollision(*map.GetTile(i, j)))
+                            hasUpCollided = true;
+                    }
 
+                //}
             }
-            //}
-            //}
-        }
         }
 
 
-        for(unsigned int k=0; k<world.missiles.size(); ++k){
-            for(unsigned int i=0; i<map.GetElements().size(); ++i){
-                for(unsigned int j=0; j<map.GetElements()[i].size(); ++j){
-                    if(world.missiles[k]->WillCollision(*map.GetElements()[i][j]) && map.GetElements()[i][j]->Collides()){
-                        //cout << iCollisions[i] << endl << jCollisions[i] << endl;
-                        world.missiles[k]->onCollision(world, k, i, j);
-                        //cout << "poney" << endl;
+
+        for(unsigned int i=0; i<map.GetElements().size(); ++i){
+            for(unsigned int j=0; j<map.GetElements()[i].size(); ++j){
+                for(unsigned int k=0; k<world.missiles.size(); ++k){
+                    if(world.missiles[k]->Collision(*map.GetElements()[i][j])/* && map.GetElements()[i][j]->Collides()*/){
+                        world.missiles[k]->onCollision(world, i, j, k);
                     }
                 }
             }
         }
+
 
         for(unsigned int i=0; i<map.GetItems().size(); ++i){
             if(Beul.WillCollision(*map.GetItems()[i])){
                 map.GetItems()[i]->onGet(world);
                 map.DeleteItem(i);
-                //std::cout << map.GetItems()[i]->GetID() << std::endl;
             }
         }
-
-
-
-
-        //cout << nbrCollisions << endl;
 
         musicTimelapse += App.GetFrameTime();
 
@@ -223,27 +198,28 @@ int main()
 
         if(nbrCollisions == 0)
             jump = true;
+
         //cout << nbrCollisions << endl;
 
         if(jump == true)
-            Beul.SetYVelocity(Beul.YVelocity() + gravity);
+            Beul.Fall();
 
         App.Clear(sf::Color(85, 85, 85));
         map.Draw(App);
         //grid.Draw(App);
 
-        ComputeFrameRate(App.GetFrameTime(), rate, frames, frameRate);
-        frameRateString.SetText(IntToString(frameRate));
+
+        frameRateString.SetText(IntToString(ComputeFrameRate(App.GetFrameTime())));
 
 
         Beul.Move();
 
         if(jump == false)
-            Beul.SetYVelocity(0);
+            Beul.SetYAcceleration(0);
 
 
         if(hasUpCollided){
-            Beul.SetYVelocity(0);
+            Beul.SetYAcceleration(0);
             hasUpCollided = false;
         }
 
@@ -256,9 +232,11 @@ int main()
         else if(View.GetRect().Right >= dynamic_cast<TileAABB*>(map.GetElements()[map.GetNbrColumns() - 1][0])->Right())
             View.SetCenter(dynamic_cast<TileAABB*>(map.GetElements()[map.GetNbrColumns() - 1][0])->Right() - App.GetDefaultView().GetHalfSize().x, App.GetDefaultView().GetCenter().y);
 
+
         BeulLives.SetPosition(App.ConvertCoords(5, 15, &View));
         BeulLives.SetPointPosition(1, Beul.GetLives()*32 + 5, 15);
         BeulLives.SetPointPosition(2, Beul.GetLives()*32 + 5, 20);
+
 
         Secret.Move(2, 0);
         Square.SetPosition(Beul.Left() - 25, Beul.Up() - 25);
@@ -270,13 +248,16 @@ int main()
 
         world.Draw(App);
 
-        //cout << Beul.GetWeaponID() << endl;
-
         if(App.GetInput().IsKeyDown(sf::Key::X))
             App.Draw(Secret);
         App.Display();
 
+        if(Beul.GetLives() == 0){
+            stop = true;
+            App.Close();
         }
+
+
         }
 
 

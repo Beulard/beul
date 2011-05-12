@@ -22,7 +22,6 @@ void RocketLauncher::onGet(World& w){
 
 void RocketLauncher::onUse(World& w, int targetX, int targetY){
     if(ready){
-        std::cout << "FIRE" << std::endl;
         float xVel;
         float yVel;
         float length;
@@ -30,21 +29,17 @@ void RocketLauncher::onUse(World& w, int targetX, int targetY){
         yVel = targetY - w.player->CenterY();
         length = sqrt(xVel * xVel + yVel * yVel);
 
-        if(xVel == 0)
-            xVel = 1;
-        if(yVel == 0)
-            yVel = 1;
-
         xVel /= length;
         yVel /= length;
-        xVel *= 6;
-        yVel *= 6;
 
 
         if(xVel == 0)
             xVel = 1;
         if(yVel == 0)
             yVel = 1;
+
+        xVel *= 1.7f;
+        yVel *= 1.7f;
 
         w.AddMissile(Ammo, xVel, yVel);
         ready = false;

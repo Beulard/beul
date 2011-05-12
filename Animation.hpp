@@ -7,9 +7,10 @@ class Animation
 {
     public:
         Animation();
+        Animation(const std::vector<Frame*>& frames);
         ~Animation();
 
-        void AddFrame(const Frame& F);
+        void AddFrame(Frame& F);
         void Draw(sf::RenderWindow& W);
         const Frame* GetFrame(unsigned int index)   const;
         void Animate(float time);
@@ -21,10 +22,12 @@ class Animation
         void Stop();
         void Reset();
 
+        const unsigned int size() const;
+        unsigned int currentFrame;
 
     private:
         std::vector<Frame*> Frames;
-        unsigned int currentFrame;
+
         bool paused;
         float totalTime;
 };

@@ -13,6 +13,8 @@ Images::Images(bool){
     appleimg.LoadFromFile("resources/Apple.png");
     rocketlauncherimg.LoadFromFile("resources/Rocketlauncher.png");
     rocketimg.LoadFromFile("resources/Rocket.png");
+    lava1img.LoadFromFile("resources/Lava1.png");
+    lava2img.LoadFromFile("resources/Lava2.png");
 }
 
 Images I(true);
@@ -31,6 +33,8 @@ BlockAppearances::BlockAppearances(bool){
     push_back(I.skyimg);
     push_back(I.earthimg);
     push_back(I.grassimg);
+    push_back(I.lava1img);
+    push_back(I.lava2img);
 }
 
 BlockAppearances::~BlockAppearances(){
@@ -38,7 +42,16 @@ BlockAppearances::~BlockAppearances(){
 }
 
 sf::Sprite& BlockAppearances::operator[](unsigned int ID){
-    return a[ID];
+    try{
+        if(ID > a.size() - 1)
+            throw 0;
+        else
+            return a[ID];
+    }
+    catch(int){
+        std::cerr << "Can't access BA[" << ID << "], returning BA[0]." << std::endl;
+        return BA[0];
+    }
 }
 
 void BlockAppearances::push_back(const sf::Image& i){

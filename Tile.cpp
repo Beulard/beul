@@ -13,7 +13,7 @@ void Tile::Draw(sf::RenderWindow& W){
 
 }
 
-void Tile::SetPosition(int x, int y){
+void Tile::SetPos(int x, int y){
     xPosition = x;
     yPosition = y;
 }

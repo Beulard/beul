@@ -131,6 +131,14 @@ void Map::GenerateRandomElements(){
                 AddItem(APPLE, i, j);
         }
 
+    for(unsigned int i=0; i<nbrColumns; ++i)
+        for(unsigned int j=0; j<nbrTilesPerColumn; ++j){
+            if(*GetTile(i, j) == SKY && j > 13)
+                ReplaceElementWith(i, j, LAVA);
+            if(*GetTile(i, j) == GRASS && *GetAboveTile(i, j) == LAVA)
+                ReplaceElementWith(i, j, EARTH);
+        }
+
     /*for(unsigned int i=0; i<nbrColumns; ++i){
         for(unsigned int j=0; j<nbrTilesPerColumn; ++j){
             if(elements[i][j] != SKY){
@@ -150,15 +158,20 @@ void Map::GenerateRandomElements(){
                 t->CS = NONE;
         }
     }*/
+//    std::cout << "dur dur" << std::endl;
+    //ReplaceElementWith(5, 10, LAVA);
+//    std::cout << "hur hur" << std::endl;
+}
+
+void Map::NeedsRePlacing(bool b){
+    needRePlacing = b;
 }
 
 void Map::RePlaceElements(sf::RenderWindow& W){
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
             if(TileExists(i, j))
-                privGetTile(i, j)->AABB::SetPosition(i*TILES_SIZE, j*TILES_SIZE);
-            /*else if(elements[i][j]->GetType() == type::SPRITE)
-                elements[i][j]->SetPosition(i*32 - 1, j*32);*/
+                privGetTile(i, j)->SetPosition(i*TILES_SIZE, j*TILES_SIZE);
         }
     }
 }
@@ -169,7 +182,7 @@ void Map::AddElement(unsigned int ID){
             return;
     if(elements.back().size() + 1 > nbrTilesPerColumn)
         elements.push_back(std::vector<TileAABB*>());
-    elements.back().push_back(tileList[ID]->Clone());
+    elements.back().push_back(tileList[ID]);
 }
 
 void Map::DeleteElement(unsigned int x, unsigned int y){
@@ -184,14 +197,13 @@ void Map::ReplaceElementWith(unsigned int x, unsigned int y, unsigned int ID){
         int ax = GetTile(x, y)->Left();
         int ay = GetTile(x, y)->Up();
         delete privGetTile(x, y);
-        *privGetTile(x, y) = *tileList[ID]->Clone();
-        privGetTile(x, y)->AABB::SetPosition(ax, ay);
+        elements[x][y] = tileList[ID];
+        privGetTile(x, y)->SetPosition(ax, ay);
     }
 }
 
 void Map::AddItem(unsigned int ID, int xPos, int yPos){
-    //auto i = itemList[ID]->Clone();
-    items.push_back(itemList[ID]->Clone());
+    items.push_back(itemList[ID]);
     items.back()->SetPosition(xPos*TILES_SIZE, yPos*TILES_SIZE);
 }
 
@@ -210,12 +222,13 @@ const TileAABB* Map::GetTile(int x, int y)  const{
     try{
         if(TileExists(x, y))
             return elements[x][y];
-        throw std::string("Can't access tile 'elements[" + IntToString(x) + "][" + IntToString(y) + "]'.\nReturning NULL pointer, probably crashing.");
+        else
+            throw 0;
     }
 
-    catch(std::string& s){
-        std::cerr << s << std::endl;
-        return NULL;
+    catch(int){
+        std::cerr << "Can't access tile 'elements[" << IntToString(x) << "][" << IntToString(y) << "]'. Returning elements[0][0]." << std::endl;
+        return elements[0][0];
     }
 }
 
@@ -351,7 +364,7 @@ void Map::Draw(sf::RenderWindow& W){
     }
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
-            TileAABB* t = dynamic_cast<TileAABB*>(elements[i][j]);
+            TileAABB* t = elements[i][j];
             if(t->Right() >= W.GetView().GetRect().Left && t->Left() <= W.GetView().GetRect().Right)
                 if(TileExists(i, j))
                     elements[i][j]->Draw(W);
@@ -404,7 +417,7 @@ void Map::Draw(sf::RenderWindow& W){
     }
 }*/
 
-void Map::ComputeCollisions(){
+/*void Map::ComputeCollisions(){
     for(unsigned int i=0; i<elements.size(); ++i){
         for(unsigned int j=0; j<elements[i].size(); ++j){
             //if(elements[i][j]->Collides()){
@@ -448,7 +461,7 @@ void Map::ComputeCollisions(){
             }
         }
     }*/
-}
+//}
 
 /*void Map::ReComputeCollisions(){
     for(unsigned int i=0; i<elements.size(); ++i){
